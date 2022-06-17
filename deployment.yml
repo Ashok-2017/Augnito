@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: deployment
+metadata:
+    name: nginx_deployment
+spec:
+  template:
+    metadata:
+      name: nginx_hello 
+      labels:
+        app: nginx_hello
+        tier: frontend
+    spec:
+      containers:
+        - name: nginx_hello
+          image: ashok/nginx_hello:1.16.1
+          volumeMounts: 
+          - mountPath: /var/www
+            name: git-volume
+      volumes:
+      - name: git-volume
+        gitRepo: 
+          repository: "https://github.com/Ashok-2017/git-volume-repo.git"
+          revision: "dfcd74716196dc6d43717d44536cde46fe106257"    
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx_hello
+      tier: frontend
